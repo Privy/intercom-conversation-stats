@@ -32,6 +32,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'intercom', '~> 3'
 gem 'google_drive'
 
 group :development, :test do

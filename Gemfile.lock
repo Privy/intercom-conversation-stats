@@ -82,6 +82,8 @@ GEM
     httpclient (2.8.0)
     hurley (0.2)
     i18n (0.7.0)
+    intercom (3.5.2)
+      json (~> 1.8)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
@@ -193,6 +195,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
   google_drive
+  intercom (~> 3)
   jbuilder (~> 2.0)
   jquery-rails
   pg (~> 0.15)
