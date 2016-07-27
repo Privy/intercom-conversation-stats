@@ -11,18 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160727213632) do
+ActiveRecord::Schema.define(version: 20160727215914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "conversations", force: :cascade do |t|
+  create_table "conversation_data", force: :cascade do |t|
     t.json     "conversation_ids", default: []
     t.boolean  "synced",           default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "conversations", ["synced"], name: "index_conversations_on_synced", using: :btree
+  add_index "conversation_data", ["synced"], name: "index_conversation_data_on_synced", using: :btree
 
 end
