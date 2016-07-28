@@ -1,6 +1,5 @@
 class RecordConversation
   include Sidekiq::Worker
-  sidekiq_options :queue => :maintenance
 
   def perform conversation_id
     most_recent = ConversationData.most_recent

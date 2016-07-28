@@ -1,7 +1,6 @@
 class SyncIntercomTagData
 
   include Sidekiq::Worker
-  sidekiq_options :queue => :maintenance
 
   def perform most_recent_id
     #access tags from Conversation table filled via webhooks
