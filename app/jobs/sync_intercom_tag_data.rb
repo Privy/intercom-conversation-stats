@@ -80,8 +80,9 @@ class SyncIntercomTagData
     ws[row_number, 1] = tag_name
     c = 2
     until c == max_columns do #fill empty columns with values for rows with new tags
-      ws[row_number,c] = "0" if c.even?
-      if c.odd?
+      if c.even?
+        ws[row_number,c] = "0"
+      else
         letters = calculate_column_letters(c - 1)
         ws[row_number,c] = "=TO_PERCENT(#{letters}#{row_number}/$#{letters}$6)"
       end
