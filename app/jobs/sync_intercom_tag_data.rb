@@ -83,30 +83,32 @@ class SyncIntercomTagData
 
   private
 
-  def calculate_column_letters column
+  def calculate_column_letters column, s = ""
     column -= 1
-    i = column%26
-    n = (column-i)/26
-    s = (i+65).chr
-    s = (n+65).chr.concat(s) if n > 0
-    return s
+    right_most = column % 26
+    letter = (right_most + 65).chr
+    s = letter + s
+    return s if column < 26
+
+    now = column / 26 - 1
+    return (calculate_column_letters(now, s))
   end
 
-  def add_new_tag(ws, tag_name, row_number, max_columns)
+  def add_new_tag ws, tag_name, row_number, max_columns
     ws[row_number, TAG_NAME_COLUMN] = tag_name
     c = FIRST_DATA_COLUMN
     until c >= max_columns do #fill empty columns with values for rows with new tags; also immediately breaks out of the loop if max columns is less than 2
       if c.even?
         ws[row_number,c] = "0"
       else
-        letters = calculate_column_letters(c - 1)
+        letters = calculate_column_letters(c)
         ws[row_number,c] = "=TO_PERCENT(#{letters}#{row_number}/$#{letters}$6)"
       end
       c += 1
     end
   end
 
-  def edit_all_time_mentions(column_letters, row_number)
+  def edit_all_time_mentions column_letters, row_number
     column_ids = column_letters.map {|l| l + "#{row_number}"}
     column_string = ""
     column_ids.each do |id| 
