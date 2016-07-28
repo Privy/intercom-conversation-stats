@@ -8,7 +8,8 @@ class SyncIntercomTagData
   WEEK_ROW = 4
 
   FIRST_DATA_COLUMN = 4
-  ALL_TIME_COLUMN = 2
+  ALL_TIME_PERCENT_COLUMN = 3
+  ALL_TIME_MENTIONS_COLUMN = 2
   TAG_NAME_COLUMN = 1
 
   def perform most_recent_id
@@ -34,7 +35,7 @@ class SyncIntercomTagData
 
     #formatting stuff
     week = ConversationData.find(most_recent_id).created_at.strftime("%m/%d/%Y")
-    ws[WEEK_ROW, ALL_TIME_COLUMN] = "6/27/16 - #{week + 6.days}"
+    ws[WEEK_ROW, ALL_TIME_MENTIONS_COLUMN] = "6/27/16 - #{week + 6.days}"
     ws[WEEK_ROW, col] = "Week of #{week}"
     ws[MENTIONS_ROW, col] = "# of Mentions"
     ws[MENTIONS_ROW, col2] = "% of Mentions"
@@ -67,7 +68,7 @@ class SyncIntercomTagData
     r = FIRST_DATA_ROW
     until r > num_rows do
       column_string = column_letters.map {|l| "#{l}#{r}"}.join(", ")
-      ws[r, ALL_TIME_COLUMN] = "=SUM(#{column_string})"
+      ws[r, ALL_TIME_MENTIONS_COLUMN] = "=SUM(#{column_string})"
       if ws[r, col] == "" #check for rows that did not get any new data, i.e. the tag was deleted
         ws[r, col] = "0"
         ws[r, col2] = "=TO_PERCENT(#{col_letters}#{r}/$#{col_letters}$#{TOTAL_ROW})"
@@ -100,7 +101,7 @@ class SyncIntercomTagData
 
   def add_new_tag ws, tag_name, row_number, max_columns
     ws[row_number, TAG_NAME_COLUMN] = tag_name
-    c = FIRST_DATA_COLUMN
+    c = ALL_TIME_PERCENT_COLUMN
     until c >= max_columns do #fill empty columns with values for rows with new tags; also immediately breaks out of the loop if max columns is less than 2
       if c.even?
         ws[row_number,c] = "0"
