@@ -2,6 +2,9 @@ class SyncIntercomTagData
 
   include Sidekiq::Worker
 
+  FIRST_DATA_ROW = 7
+  FIRST_DATA_COLUMN = 2
+
   def perform most_recent_id
     #access tags from Conversation table filled via webhooks
     tags = IntercomHelper.find_tags(ConversationData.find(most_recent_id).conversation_ids)
@@ -31,12 +34,12 @@ class SyncIntercomTagData
     ws[5, col2] = "% of Mentions"
 
     #total # mentions and % mentions
-    ws[6, col] = "=SUM(#{col_letters}7:#{col_letters})"
-    ws[6, col2] = "=SUM(#{col2_letters}7:#{col2_letters})"
+    ws[6, col] = "=SUM(#{col_letters}#{FIRST_DATA_ROW}:#{col_letters})"
+    ws[6, col2] = "=SUM(#{col2_letters}#{FIRST_DATA_ROW}:#{col2_letters})"
 
     #update data
     tags.each do |tag_name, tag_count|
-      r = 7
+      r = FIRST_DATA_ROW
       until ws[r, 1] == tag_name do #find a row whose name matches the tag name
         r += 1
         if r > num_rows #if this tag doesn't match any rows, i.e. it's a new tag
@@ -49,7 +52,7 @@ class SyncIntercomTagData
     end 
 
     #check for rows that did not get any new data, i.e. the tag was deleted
-    r = 7
+    r = FIRST_DATA_ROW
     until r > num_rows do
       if ws[r, col] == ""
         ws[r, col] = "0"
@@ -79,7 +82,7 @@ class SyncIntercomTagData
   def add_new_tag(ws, tag_name, row_number, max_columns)
     raise ArgumentError, "max columns must be > 1" if max_columns < 1
     ws[row_number, 1] = tag_name
-    c = 2
+    c = FIRST_DATA_COLUMN
     until c >= max_columns do #fill empty columns with values for rows with new tags; also immediately breaks out of the loop if max columns is less than 2
       if c.even?
         ws[row_number,c] = "0"
