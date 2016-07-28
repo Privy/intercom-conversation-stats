@@ -83,15 +83,18 @@ class SyncIntercomTagData
 
   private
 
-  def calculate_column_letters column, s = ""
+  def calculate_column_letters column
     column -= 1
-    right_most = column % 26
-    letter = (right_most + 65).chr
-    s = letter + s
-    return s if column < 26
+    s = ""
 
-    now = column / 26 - 1
-    return (calculate_column_letters(now, s))
+    loop do
+      letter = ((column % 26) + 65).chr
+      s << letter
+      break if column < 26
+      column = (column / 26) - 1
+    end
+
+    s.reverse
   end
 
   def add_new_tag ws, tag_name, row_number, max_columns
