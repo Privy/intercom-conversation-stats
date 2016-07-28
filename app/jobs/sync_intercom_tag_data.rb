@@ -3,7 +3,13 @@ class SyncIntercomTagData
   include Sidekiq::Worker
 
   FIRST_DATA_ROW = 7
-  FIRST_DATA_COLUMN = 2
+  TOTAL_ROW = 6
+  MENTIONS_ROW = 5
+  WEEK_ROW = 4
+
+  FIRST_DATA_COLUMN = 4
+  ALL_TIME_COLUMN = 2
+  TAG_NAME_COLUMN = 1
 
   def perform most_recent_id
     #access tags from Conversation table filled via webhooks
@@ -28,19 +34,19 @@ class SyncIntercomTagData
 
     #formatting stuff
     week = ConversationData.find(most_recent_id).created_at.strftime("%m/%d/%Y")
-    ws[4, 2] = "6/27/16 - #{week + 6.days}"
-    ws[4, col] = "Week of #{week}"
-    ws[5, col] = "# of Mentions"
-    ws[5, col2] = "% of Mentions"
+    ws[WEEK_ROW, ALL_TIME_COLUMN] = "6/27/16 - #{week + 6.days}"
+    ws[WEEK_ROW, col] = "Week of #{week}"
+    ws[MENTIONS_ROW, col] = "# of Mentions"
+    ws[MENTIONS_ROW, col2] = "% of Mentions"
 
     #total # mentions and % mentions
-    ws[6, col] = "=SUM(#{col_letters}#{FIRST_DATA_ROW}:#{col_letters})"
-    ws[6, col2] = "=SUM(#{col2_letters}#{FIRST_DATA_ROW}:#{col2_letters})"
+    ws[TOTAL_ROW, col] = "=SUM(#{col_letters}#{FIRST_DATA_ROW}:#{col_letters})"
+    ws[TOTAL_ROW, col2] = "=SUM(#{col2_letters}#{FIRST_DATA_ROW}:#{col2_letters})"
 
     #update data
     tags.each do |tag_name, tag_count|
       r = FIRST_DATA_ROW
-      until ws[r, 1] == tag_name do #find a row whose name matches the tag name
+      until ws[r, TAG_NAME_COLUMN] == tag_name do #find a row whose name matches the tag name
         r += 1
         if r > num_rows #if this tag doesn't match any rows, i.e. it's a new tag
           num_rows = r
@@ -48,15 +54,22 @@ class SyncIntercomTagData
         end
       end
       ws[r, col] = tag_count
-      ws[r, col2] = "=TO_PERCENT(#{col_letters}#{r}/$#{col_letters}$6)"
+      ws[r, col2] = "=TO_PERCENT(#{col_letters}#{r}/$#{col_letters}$#{TOTAL_ROW})"
     end 
 
-    #check for rows that did not get any new data, i.e. the tag was deleted
+    #update formulas for "all time mentions" column and check for rows that did not get any new data
+    column_letters = []
+    c = FIRST_DATA_COLUMN
+    until c > col
+      column_letters << calculate_column_letters(c)
+      c += 2 #we only want "# of mentions" columns
+    end
     r = FIRST_DATA_ROW
     until r > num_rows do
-      if ws[r, col] == ""
+      edit_all_time_mentions(column_letters, r)
+      if ws[r, col] == "" #check for rows that did not get any new data, i.e. the tag was deleted
         ws[r, col] = "0"
-        ws[r, col2] = "=TO_PERCENT(#{col_letters}#{r}/$#{col_letters}$6)"
+        ws[r, col2] = "=TO_PERCENT(#{col_letters}#{r}/$#{col_letters}$#{TOTAL_ROW})"
       end
       r +=1
     end
@@ -80,8 +93,7 @@ class SyncIntercomTagData
   end
 
   def add_new_tag(ws, tag_name, row_number, max_columns)
-    raise ArgumentError, "max columns must be > 1" if max_columns < 1
-    ws[row_number, 1] = tag_name
+    ws[row_number, TAG_NAME_COLUMN] = tag_name
     c = FIRST_DATA_COLUMN
     until c >= max_columns do #fill empty columns with values for rows with new tags; also immediately breaks out of the loop if max columns is less than 2
       if c.even?
@@ -92,6 +104,16 @@ class SyncIntercomTagData
       end
       c += 1
     end
+  end
+
+  def edit_all_time_mentions(column_letters, row_number)
+    column_ids = column_letters.map {|l| l + "#{row_number}"}
+    column_string = ""
+    column_ids.each do |id| 
+      column_string += id 
+      column_string += ", " unless column_ids.last == id
+    end
+    ws[r, ALL_TIME_COLUMN] = "=SUM(#{column_string})"
   end
 
 end
