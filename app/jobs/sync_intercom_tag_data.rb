@@ -66,7 +66,8 @@ class SyncIntercomTagData
     end
     r = FIRST_DATA_ROW
     until r > num_rows do
-      edit_all_time_mentions(column_letters, r)
+      column_string = column_letters.map {|l| "#{l}#{r}"}.join(", ")
+      ws[r, ALL_TIME_COLUMN] = "=SUM(#{column_string})"
       if ws[r, col] == "" #check for rows that did not get any new data, i.e. the tag was deleted
         ws[r, col] = "0"
         ws[r, col2] = "=TO_PERCENT(#{col_letters}#{r}/$#{col_letters}$#{TOTAL_ROW})"
@@ -109,16 +110,6 @@ class SyncIntercomTagData
       end
       c += 1
     end
-  end
-
-  def edit_all_time_mentions column_letters, row_number
-    column_ids = column_letters.map {|l| l + "#{row_number}"}
-    column_string = ""
-    column_ids.each do |id| 
-      column_string += id 
-      column_string += ", " unless column_ids.last == id
-    end
-    ws[r, ALL_TIME_COLUMN] = "=SUM(#{column_string})"
   end
 
 end
