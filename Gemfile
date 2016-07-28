@@ -32,9 +32,16 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+#support tags gems
 gem 'intercom', '~> 3'
 gem 'google_drive'
 gem 'sidekiq'
+gem 'figaro'
+
+#for testing during development
+gem 'redis'
+gem 'redis-rails'
+gem 'redis-objects'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

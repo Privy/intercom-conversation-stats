@@ -5,5 +5,6 @@ class CreateConversationData < ActiveRecord::Migration
       t.boolean :synced, default: false, index: true
       t.timestamps
     end
+    ConversationData.create
   end
 end
