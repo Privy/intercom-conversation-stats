@@ -175,6 +175,8 @@ GEM
       redis (>= 2.2)
     representable (2.3.0)
       uber (~> 0.0.7)
+    responders (2.1.1)
+      railties (>= 4.2.0, < 5.1)
     retriable (2.1.0)
     sass (3.4.22)
     sass-rails (5.0.6)
@@ -241,6 +243,7 @@ DEPENDENCIES
   redis
   redis-objects
   redis-rails
+  responders (~> 2.0)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   sidekiq
