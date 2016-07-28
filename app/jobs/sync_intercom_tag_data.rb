@@ -101,8 +101,8 @@ class SyncIntercomTagData
       if c.even?
         ws[row_number,c] = "0"
       else
-        letters = calculate_column_letters(c)
-        ws[row_number,c] = "=TO_PERCENT(#{letters}#{row_number}/$#{letters}$6)"
+        letters = calculate_column_letters(c - 1)
+        ws[row_number,c] = "=TO_PERCENT(#{letters}#{row_number}/$#{letters}$TOTAL_ROW)"
       end
       c += 1
     end
