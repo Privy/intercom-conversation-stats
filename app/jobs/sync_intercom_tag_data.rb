@@ -34,8 +34,10 @@ class SyncIntercomTagData
     num_rows = ws.num_rows
 
     #formatting stuff
-    week = ConversationData.find(most_recent_id).created_at.strftime("%m/%d/%Y")
-    ws[WEEK_ROW, ALL_TIME_MENTIONS_COLUMN] = "6/27/16 - #{week + 6.days}"
+    week = ConversationData.find(most_recent_id).created_at
+    end_of_week = (week + 6.days).strftime("%m/%d/%Y")
+    week = week.strftime("%m/%d/%Y")
+    ws[WEEK_ROW, ALL_TIME_MENTIONS_COLUMN] = "6/27/16 - #{end_of_week}"
     ws[WEEK_ROW, col] = "Week of #{week}"
     ws[MENTIONS_ROW, col] = "# of Mentions"
     ws[MENTIONS_ROW, col2] = "% of Mentions"
