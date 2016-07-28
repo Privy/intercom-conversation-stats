@@ -77,9 +77,10 @@ class SyncIntercomTagData
   end
 
   def add_new_tag(ws, tag_name, row_number, max_columns)
+    raise ArgumentError, "max columns must be > 1" if max_columns < 1
     ws[row_number, 1] = tag_name
     c = 2
-    until c == max_columns do #fill empty columns with values for rows with new tags
+    until c >= max_columns do #fill empty columns with values for rows with new tags; also immediately breaks out of the loop if max columns is less than 2
       if c.even?
         ws[row_number,c] = "0"
       else
