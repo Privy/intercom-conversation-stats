@@ -48,11 +48,11 @@ class SyncIntercomTagData
     tags.each do |tag_name, tag_count|
       r = FIRST_DATA_ROW
       until ws[r, TAG_NAME_COLUMN] == tag_name do #find a row whose name matches the tag name
-        r += 1
         if r > num_rows #if this tag doesn't match any rows, i.e. it's a new tag
           num_rows = r
           add_new_tag(ws, tag_name, num_rows, col)
         end
+        r += 1
       end
       ws[r, col] = tag_count
       ws[r, col2] = "=TO_PERCENT(#{col_letters}#{r}/$#{col_letters}$#{TOTAL_ROW})"
