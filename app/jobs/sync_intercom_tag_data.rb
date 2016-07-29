@@ -25,6 +25,7 @@ class SyncIntercomTagData
         
     #establish column numbers and letters, and row number
     col = ws.num_cols + 1
+    col = FIRST_DATA_COLUMN if col < FIRST_DATA_COLUMN
     col2 = col + 1
     col_letters = calculate_column_letters(col)
     col2_letters = calculate_column_letters(col2)
@@ -72,7 +73,7 @@ class SyncIntercomTagData
         ws[r, col] = "0"
         ws[r, col2] = "=TO_PERCENT(#{col_letters}#{r}/$#{col_letters}$#{TOTAL_ROW})"
       end
-      r +=1
+      r += 1
     end
 
     #THIS IS IMPORTANT - save the worksheet and reload its contents from the server
