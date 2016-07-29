@@ -50,6 +50,7 @@ class SyncIntercomTagData
       until ws[r, TAG_NAME_COLUMN] == tag_name do #find a row whose name matches the tag name
         if r > num_rows #if this tag doesn't match any rows, i.e. it's a new tag
           num_rows = r
+          r -= 1
           add_new_tag(ws, tag_name, num_rows, col)
         end
         r += 1
