@@ -125,6 +125,8 @@ GEM
     pkg-config (1.1.7)
     puma (3.4.0)
     rack (1.6.4)
+    rack-protection (1.5.3)
+      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.6)
@@ -218,6 +220,10 @@ GEM
       faraday (~> 0.9)
       jwt (~> 1.5)
       multi_json (~> 1.10)
+    sinatra (1.4.6)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (>= 1.3, < 3)
     spring (1.7.2)
     sprockets (3.7.0)
       concurrent-ruby (~> 1.0)
@@ -268,6 +274,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   sidekiq
+  sinatra
   spring
   turbolinks
   uglifier (>= 1.3.0)

@@ -38,6 +38,9 @@ gem 'google_drive'
 gem 'sidekiq'
 gem 'figaro'
 
+# if you require 'sinatra' you get the DSL extended to Object
+gem 'sinatra', :require => false
+
 #for testing during development
 gem 'redis'
 gem 'redis-rails'

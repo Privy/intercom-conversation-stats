@@ -1,4 +1,18 @@
 Rails.application.routes.draw do
+
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
+  
+  # Rails >= 4:
+  Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
+
+  # config/routes.rb
+  require "sidekiq/web"
+  Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+    username == ENV["SIDEKIQ_USERNAME"] && password == ENV["SIDEKIQ_PASSWORD"]
+  end if Rails.env.production?
+  mount Sidekiq::Web, at: "/sidekiq"
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
