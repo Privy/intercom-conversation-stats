@@ -3,7 +3,7 @@ require 'rails_helper'
 describe ConversationsController do
 
   before(:all) do
-    ConversationData.create if ConversationData.count == 0
+    ConversationData.create
   end
 
   EXAMPLE_JSON = {

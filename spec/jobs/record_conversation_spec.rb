@@ -3,7 +3,7 @@ require 'rails_helper'
 describe RecordConversation do
 
   before(:all) do
-    ConversationData.create if ConversationData.count == 0
+    ConversationData.create
   end
   
   describe "#perform" do
