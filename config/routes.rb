@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-
-  require 'sidekiq/web'
-  mount Sidekiq::Web => '/sidekiq'
   
   # Rails >= 4:
   Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
