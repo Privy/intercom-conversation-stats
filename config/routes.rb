@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
+
+  require 'sidekiq/web'
   
   # Rails >= 4:
   Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
 
-  # config/routes.rb
-  require "sidekiq/web"
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
     username == ENV["SIDEKIQ_USERNAME"] && password == ENV["SIDEKIQ_PASSWORD"]
   end if Rails.env.production?
