@@ -6,16 +6,13 @@ before_action :set_request_params, only: [:create]
     begin
       session = GoogleDrive.login_with_oauth(Google::Auth::ServiceAccountCredentials.from_env('https://www.googleapis.com/auth/drive'))
       @google_auth = 1
-    rescue
-      @google_auth = 0
-    end
-    if @google_auth == 1
       begin
-        session = GoogleDrive.login_with_oauth(Google::Auth::ServiceAccountCredentials.from_env('https://www.googleapis.com/auth/drive'))
         ws = session.spreadsheet_by_key(ENV['GOOGLE_SPREADSHEET_KEY']).worksheets[0]
         @google_auth = 2
       rescue
       end
+    rescue RuntimeError
+      @google_auth = 0
     end
     #check intercom authorization
     begin
