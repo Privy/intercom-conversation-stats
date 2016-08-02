@@ -9,7 +9,7 @@ before_action :set_request_params, only: [:create]
       begin
         ws = session.spreadsheet_by_key(ENV['GOOGLE_SPREADSHEET_KEY']).worksheets[0]
         @google_auth = 2
-      rescue
+      rescue Google::Apis::ClientError
       end
     rescue RuntimeError
       @google_auth = 0
