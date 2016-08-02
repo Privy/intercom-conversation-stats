@@ -65,6 +65,8 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
+  root to: "conversations#index"
+
   #Intercom webhooks
   resources :conversations, only: [:create]
 end
