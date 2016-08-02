@@ -17,7 +17,7 @@ class SyncIntercomTagData
     tags = IntercomHelper.find_tags(ConversationData.find(most_recent_id).conversation_ids)
 
     #remove prefixes from tags, remove white space, and capitalize them
-    tags.transform_keys! {|tag_name| tag_name.split(" - ").last.strip.titleize}
+    tags.transform_keys! {|tag_name| CGI.unescape_html(tag_name.split(" - ").last.strip.titleize)}
         
     #access worksheet
     session = GoogleDrive.login_with_oauth(Google::Auth::ServiceAccountCredentials.from_env('https://www.googleapis.com/auth/drive'))
