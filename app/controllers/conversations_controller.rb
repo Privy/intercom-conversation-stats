@@ -25,7 +25,9 @@ before_action :set_request_params, only: [:create]
   end
 
   def create
-    Sidekiq::Client.enqueue(RecordConversation, @request_params["data"]["item"]["id"])
+    # To record this asynchronously:
+    # Sidekiq::Client.enqueue(RecordConversation, @request_params["data"]["item"]["id"])
+    RecordConversation.new.perform(@request_params["data"]["item"]["id"])
     head :ok
   end
 
