@@ -44,3 +44,6 @@ To aggregate data other than tags, add a new method to `app/helpers/intercom_hel
 By default, your Google Sheets document will be updated every week on Monday. To change how often or which day your Sheet is updated, edit `lib/tasks/scheduler.rake`. Note that you may also have to edit `app/jobs/sync_intercom_tag_data.rb` if you make your Sheet update more often than weekly, because the columns display "Week of <week>" for each update by default.
 ### Sheet Layout
 The layout of the Google Sheets document can be customized by editing `app/jobs/sync_intercom_tag_data.rb`. This Sidekiq job uses the [google-drive-ruby gem](https://github.com/gimite/google-drive-ruby) to edit the Sheets document. Read [here](http://www.rubydoc.info/gems/google_drive/GoogleDrive/Worksheet) for the full documentation for the relevant part of that gem. **NOTE: If you have formulas or color-coding in ANY of your cells, DO NOT use the `delete_rows` or `insert_rows` methods. These will delete any formulas and mess up cell colors for your entire Sheet!** Color-coding of cells is not supported by this gem, so an alternate way to automatically color code your data in Sheets is via [conditional formatting](https://support.google.com/docs/answer/78413?co=GENIE.Platform%3DDesktop&hl=en).
+
+## License
+The MIT License - see License File
