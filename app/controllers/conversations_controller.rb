@@ -16,7 +16,7 @@ before_action :set_request_params, only: [:create]
     end
     #check intercom authorization
     begin
-      intercom = Intercom::Client.new(app_id: ENV['INTERCOM_KEY'], api_key: ENV['INTERCOM_SECRET'])
+      intercom = Intercom::Client.new(token: ENV['INTERCOM_ACCESS_TOKEN']);
       intercom.admins.all.first
       @intercom_auth = true
     rescue
