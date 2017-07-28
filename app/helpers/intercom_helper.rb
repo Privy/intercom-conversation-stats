@@ -5,7 +5,8 @@ module IntercomHelper
   # @param [Array<String>] conversation_ids - the intercom conversation ids
   # @return [Hash<String, Integer>]
   def self.find_tags conversation_ids
-    intercom = Intercom::Client.new(app_id: ENV['INTERCOM_KEY'], api_key: ENV['INTERCOM_SECRET'])
+    intercom = Intercom::Client.new(token: ENV['INTERCOM_ACCESS_TOKEN']);
+
 
     tags = {}
 
