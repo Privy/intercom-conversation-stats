@@ -1,8 +1,8 @@
 class ConversationsController < BaseController
-before_action :set_request_params, only: [:create]
+  before_action :set_request_params, only: [:create]
 
   def index
-    #check google authorization
+    # check google authorization
     begin
       session = GoogleDrive.login_with_oauth(Google::Auth::ServiceAccountCredentials.from_env('https://www.googleapis.com/auth/drive'))
       @google_auth = 1
@@ -14,10 +14,10 @@ before_action :set_request_params, only: [:create]
     rescue RuntimeError
       @google_auth = 0
     end
-    #check intercom authorization
+
+    # check intercom authorization
     begin
-      intercom = Intercom::Client.new(app_id: ENV['INTERCOM_KEY'], api_key: ENV['INTERCOM_SECRET'])
-      intercom.admins.all.first
+      IntercomHelper.client.admins.all.first
       @intercom_auth = true
     rescue
       @intercom_auth = false
@@ -25,10 +25,7 @@ before_action :set_request_params, only: [:create]
   end
 
   def create
-    # To record this asynchronously:
-    # Sidekiq::Client.enqueue(RecordConversation, @request_params["data"]["item"]["id"])
-    RecordConversation.new.perform(@request_params["data"]["item"]["id"])
+    RecordConversation.new.perform(@request_params['data']['item']['id'])
     head :ok
   end
-
-end 
+end

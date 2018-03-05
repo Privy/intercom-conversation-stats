@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <title>Intercom Conversation Stats</title>
     <h1>Authorization Test</h1>
   </head>
 
   <body>
-    <p><%=  
+    <p><%=
     if @google_auth == 2
       "Google authorization and login successful. Spreadsheet accessed successfully."
     elsif @google_auth == 1
@@ -16,7 +15,8 @@
       "Google authorization and login failed. Check your credentials."
     end
     %></p>
-    <p><%=  
+
+    <p><%=
     if @intercom_auth
       "Intercom authorization successful."
     else
@@ -24,5 +24,4 @@
     end
     %></p>
   </body>
-
 </html>

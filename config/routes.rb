@@ -1,14 +1,16 @@
 Rails.application.routes.draw do
-
   require 'sidekiq/web'
-  
+
   # Rails >= 4:
   Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
 
-  Sidekiq::Web.use Rack::Auth::Basic do |username, password|
-    username == ENV["SIDEKIQ_USERNAME"] && password == ENV["SIDEKIQ_PASSWORD"]
-  end if Rails.env.production?
-  mount Sidekiq::Web, at: "/sidekiq"
+  if Rails.env.production?
+    Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+      username == ENV['SIDEKIQ_USERNAME'] && password == ENV['SIDEKIQ_PASSWORD']
+    end
+  end
+
+  mount Sidekiq::Web, at: '/sidekiq'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -65,8 +67,8 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
-  root to: "conversations#index"
+  root to: 'conversations#index'
 
-  #Intercom webhooks
+  # Intercom webhooks
   resources :conversations, only: [:create]
 end
