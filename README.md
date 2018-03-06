@@ -8,7 +8,7 @@ Aggregates intercom conversation tags on a weekly basis, and presents the data i
 * [Specific documentation for working with sheets](http://www.rubydoc.info/gems/google_drive/GoogleDrive/Worksheet)
 
 ## Setup
-If you don't see setup instructions for your platform of choice, feel free to try setting up yourself and letting us know, or request our help via intercom@privy.com.
+
 ### Heroku
 * Create a new spreadsheet in Google Drive.
 * Create an OAuth 2.0 service account in the [Google APIs Credentials Manager](https://console.developers.google.com/apis/credentials)
@@ -37,7 +37,7 @@ If you don't see setup instructions for your platform of choice, feel free to tr
 * Visit your new app at `<your heroku app>.herokuapp.com` - if it all went well, you should see no error messages.
 
 ## Customization
-**NOTE: To customize this app you need knowledge on how to write code in Ruby on Rails!** 
+This app is written in Ruby on Rails.
 ### Data Gathered
 To aggregate data other than tags, add a new method to `app/helpers/intercom_helper.rb`. Make sure it is a class method by naming it `self.method_name` and make sure you replace the call to `find_tags` in `app/jobs/sync_intercom_tag_data.rb`.
 ### Sheet Update Frequency
