@@ -125,7 +125,7 @@ GEM
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
     os (0.9.6)
-    pg (0.18.4)
+    pg (1.2.3)
     puma (3.12.4)
     rack (1.6.13)
     rack-protection (1.5.5)
@@ -267,7 +267,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   newrelic_rpm
-  pg (~> 0.15)
+  pg (~> 1.2)
   puma
   rails (= 4.2.7.1)
   redis
