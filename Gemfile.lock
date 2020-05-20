@@ -126,7 +126,7 @@ GEM
       mini_portile2 (~> 2.3.0)
     os (0.9.6)
     pg (0.18.4)
-    puma (3.4.0)
+    puma (3.12.4)
     rack (1.6.11)
     rack-protection (1.5.5)
       rack
